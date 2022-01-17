@@ -1,4 +1,3 @@
-
 /**
  * An Array.prototype.slice.call(arguments) alternative
  *
@@ -8,13 +7,13 @@
  * @api public
  */
 
-module.exports = function (args, slice, sliceEnd) {
-  var ret = [];
+ module.exports = function (args, slice, sliceEnd) {
+
   var len = args.length;
 
-  if (0 === len) return ret;
+  if (0 === len) return [];
 
-  var start = slice < 0
+  var start = (slice < 0)
     ? Math.max(0, slice + len)
     : slice || 0;
 
@@ -24,10 +23,19 @@ module.exports = function (args, slice, sliceEnd) {
       : sliceEnd
   }
 
-  while (len-- > start) {
-    ret[len - start] = args[len];
+  if (len - start < 1) return []
+  var ret = new Array(len - start);
+
+  if (start !== 0) {
+    while (len-- > start) {
+      ret[len - start] = args[len];
+    }
+  } else {
+
+    while (len--) {
+      ret[len] = args[len];
+    }
   }
 
   return ret;
 }
-
